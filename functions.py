@@ -54,7 +54,10 @@ def setup(data):
     variables = [key for (key, value) in data]
     domains = {key: [x for x in range(1, 10)] if value is '-' else [int(value)] for (key, value) in data}
     constraints = {key: generate_constraints(alpha.index(key[0]), int(key[1])) for key in variables}
-    return CSP(variables, domains, constraints)
+    csp = CSP(variables, domains, constraints)
+    print('\nInitial Sudoku:')
+    print_sudoku(csp)
+    return csp
 
 # returns the range for each 3x3 block given x
 def block(x): return range((x//3)*3, (x//3)*3+3)
@@ -145,7 +148,7 @@ def check_solved(ac3, csp):
         # if every domain only has one value
         print('The CSP is arc-consistent', end='')
         if not any([x for x in csp.variables if len(csp.domains[x]) > 1]):
-            print()
+            print('\n\nSolved Sudoku:')
             print_sudoku(csp)
         else:
             print(', but it is not solved.')
@@ -154,6 +157,7 @@ def check_solved(ac3, csp):
             if result:
                 # set the domain to be the complete assignment
                 csp.domains = result
+                print('Solved Sudoku:')
                 print_sudoku(csp)
     else:
         print('Failure: No Solution Found')
@@ -171,8 +175,7 @@ def print_sudoku(csp):
     sudoku = [['-' for x in range(9)] for y in range(9)]
     # sets the values in the sudoku variable
     for key in csp.variables:
-        sudoku[alpha.index(key[0])][int(key[1])-1] = csp.domains[key][0]
-    print()
+        sudoku[alpha.index(key[0])][int(key[1])-1] = csp.domains[key][0] if len(csp.domains[key]) == 1 else '-'
     # prints the sudoku all pretty like
     for x in sudoku:
         for y in x:
