@@ -265,7 +265,7 @@ def status_bar(length):
         length - the number of items left in the queue
     ------------------------------------------------------
     """
-    sleep(0.0003) # so we can see the length of the queue change
+    #sleep(0.0003) # so we can see the length of the queue change
     barlength = 50
     total = 6500
     filled = int(barlength * length / total)
