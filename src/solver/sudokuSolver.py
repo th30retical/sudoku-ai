@@ -28,13 +28,13 @@ class SudokuSolver(Resource):
 
 		csp = setup(data)
 		consistent = ac3(csp)
-		
+
 		if consistent:
 			if not any([x for x in csp.variables if len(csp.domains[x]) > 1]):
-				return csp.domains
+				return {"message": "solved", "solution": csp.domains}
 			else:
 				result = backtracking_search(csp)
 				if result:
-					return result
+					return {"message": "solved", "solution": result}
 
 		return {"message": "Not a solvable sudoku problem."}
